@@ -10,27 +10,18 @@ class LoginForm extends AsyncForm {
    * закрывает окно, в котором находится форма
    * */
   onSubmit(options) {
-    // Используем метод User.login для авторизации пользователя
-    User.login(options)
-      .then(response => {
-        // Проверяем, успешно ли прошла авторизация
+    User.login(
+      data,
+      (err, response) => {
         if (response && response.success) {
-          // Сбрасываем форму
-          this.reset();
-
-          // Меняем состояние приложения на 'user-logged'
           App.setState('user-logged');
-
-          // Закрываем модальное окно
-          Modal.close();
-        } else {
-          // Здесь можно обработать ошибку, например, показать сообщение об ошибке
-          console.error('Login failed:', response.error);
+          App.getModal('login').element.querySelector('form').reset();
+          App.getModal('login').close();
         }
-      })
-      .catch(error => {
-        // Обработка ошибок сети или других ошибок
-        console.error('Error during login:', error);
-      });
+        else {
+          alert(err);
+        }
+      }
+    );
   }
 }

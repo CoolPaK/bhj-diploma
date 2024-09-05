@@ -5,6 +5,7 @@
  * закрытие имеющихся окон
  * */
 class Modal {
+  static element;
   /**
    * Устанавливает текущий элемент в свойство element
    * Регистрирует обработчики событий с помощью Modal.registerEvents()
@@ -27,12 +28,11 @@ class Modal {
    * */
   registerEvents() {
     // Находим все элементы, которые имеют атрибут data-dismiss со значением modal
-    const closeElements = this.element.querySelectorAll('[data-dismiss="modal"]');
-
-    closeElements.forEach(item => {
-      item.addEventListener('click', (event) => {
-        event.preventDefault(); // предотвращаем переход по ссылке
-        this.onClose();
+    const closeBtns = Array.from(document.querySelectorAll("[data-dismiss='modal']"));
+    closeBtns.forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.onClose(e);
       });
     });
    }
@@ -55,6 +55,6 @@ class Modal {
    * Закрывает окно: удаляет CSS-свойство display
    * */
   close(){
-    this.element.style.display = '';
+    this.element.style.removeProperty("display");
   }
 }

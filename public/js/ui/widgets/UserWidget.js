@@ -32,15 +32,9 @@ class UserWidget {
    * авторизованного пользователя
    * */
   update(){
-    // Получаем информацию о текущем пользователе
-    User.current((response) => {
-      if (response && response.success) {
-        // Если пользователь авторизован, обновляем имя пользователя
-        this.element.querySelector('.user-name').textContent = response.data.name;
-      } else {
-        // Если пользователь не авторизован, можно очистить имя или показать другое сообщение
-        this.element.querySelector('.user-name').textContent = 'Гость'; // или можно оставить пустым
-      }
-    });
+    let currentUser = User.current();
+    if (currentUser) {
+      document.querySelector(".user-name").textContent = currentUser.name;
+    }
   }
 }

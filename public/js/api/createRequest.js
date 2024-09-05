@@ -2,41 +2,51 @@
  * Основная функция для совершения запросов
  * на сервер.
  * */
-const createRequest = (options = {}) => {
+const createRequest = (options = { url, data, method, callback }) => {
     const xhr = new XMLHttpRequest();
-    const  {url, data, method, callback } = options;
+    xhr.responseType = 'json';
 
-    //Формирования строки запроса для метода GET
-    if (method === 'GET' && data) {
-        const queryString = URLSearchParams(data).toString();
-        xhr.open(method, `${url}?${queryString}`);
-    } else {
-        xhr.open(method, url);
+    if (options.method === "GET") {
+        if (typeof (options.data) === "string") {
+            options.url += "/" + options.data
+        }
+        else {
+            options.url += "?";
+            for (prop in options.data) {
+                options.url += prop + "=" + (options.data)[prop] + "&";
+            }
+        }
     }
+    
+    else {
+        formData = new FormData;
 
-    xhr.responseType = 'JSON';
-
-    //Обработка ответа
-    xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            callback(null, xhr.response);
-        } else {
-            callback(new Error(`Ошибка ${xhr.status}: ${xhr.statusText}`));
+        for (prop in options.data) {
+            formData.append(prop, (options.data)[prop]);
         }
-    };
+    }
+    xhr.open(options.method, options.url);
 
-    xhr.onerror = () => {
-        callback(new Error('Сетевая ошибка'));
-    };
 
-    //Отправка данных
-    if (method !== 'GET' && data) {
-        const formData = new formData();
-        for (const key in data) {
-            formData.append(key, data[key]);
-        }
-        xhr.send(formData);
-    } else {
+    if (options.method === "GET") {
         xhr.send();
     }
+    else {
+        xhr.send(formData);
+    }
+
+    
+    xhr.addEventListener("load", (e) => {
+        if (xhr.response.success) {
+            options.callback(null, xhr.response);
+        }
+        else {
+            options.callback(new Error(xhr.response.error), null);
+        }
+    });
+
+    xhr.addEventListener("error", (e) => {
+        options.callback(new Error(xhr.statusText), null);
+    });
+
 };

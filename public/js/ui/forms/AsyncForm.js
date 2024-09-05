@@ -6,6 +6,8 @@
  * для последующей обработки
  * */
 class AsyncForm {
+
+  static element;
   /**
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
@@ -25,10 +27,10 @@ class AsyncForm {
    * вызывает метод submit()
    * */
   registerEvents() {
-    this.element.addEventListener('submit', (event) => {
-      event.pervenDefault();
+    this.element.addEventListener('submit', (e) => {
+      e.preventDefault();
       this.submit();
-    } )
+    });
   }
 
   /**
@@ -40,13 +42,7 @@ class AsyncForm {
    * */
   getData() {
     const formData = new formData(this.element);
-    const data = {};
-
-    for (let [key, value] of formData.entries()) {
-      data[key] = value;
-    }
-
-    return data;
+    return Object.fromEntries(formData.entries());
 
   }
 

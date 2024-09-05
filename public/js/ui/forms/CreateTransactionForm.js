@@ -17,22 +17,22 @@ class CreateTransactionForm extends AsyncForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
-    Account.list((err, response) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
 
-      const accountSelect = this.element.querySelector('.account-select');
-      accountSelect.innerHTML = ''; //Очистка текущего списка
+    let currentUser = User.current();
+    let accountList = [];
+    let selectHTML = "";
+    if (currentUser) {
+      Account.list(currentUser, (err, response) => {
+        accountList = response.data;
+        accountList.forEach(item => {
+          selectHTML += `
+            <option value="${item.id}">${item.name}</option>
+          `
+        });
 
-      response.data.forEach(account => {
-        const option = document.createElement('option');
-        option.value = account.id;
-        option.textContent = account.name;
-        accountSelect.appChild(option);
+        this.element.querySelector("select").innerHTML = selectHTML;
       });
-    });
+    }
   }
 
   /**
@@ -43,15 +43,19 @@ class CreateTransactionForm extends AsyncForm {
    * */
   onSubmit(data) {
     Transaction.create(data, (err, response) => {
-      if (err) {
-        console.error(err);
-        return;
+      if (response && response.success) {
+        if (this.element.id === 'new-income-form') {
+          App.getModal('newIncome').close();
+          App.getModal('newIncome').element.querySelector('form').reset();
+        }
+        else {
+          App.getModal('newExpense').close();
+          App.getModal('newExpense').element.querySelector('form').reset();
+        }
+        App.update();
       }
-
-      if (response.success) {
-        this.element.reset(); // Сброс формы
-        App.getModal('newExpense').close(); // Закрытие модального окна
-        App.update(); // Обновление информации в приложении
+      else {
+        alert(err);
       }
     });
   }

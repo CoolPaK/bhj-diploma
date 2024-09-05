@@ -18,19 +18,14 @@ class Sidebar {
    * при нажатии на кнопку .sidebar-toggle
    * */
   static initToggleButton() {
-    const toggleButton = document.querySelector('.sidebar-toggle');
 
-    // Проверяем, что кнопка найдена
-    if (toggleButton) {
-      toggleButton.addEventListener('click', (event) => {
-        event.preventDefault(); // Отменяем стандартное поведение ссылки
-
-        // Переключаем классы для body
-        document.body.classList.toggle('sidebar-open');
-        document.body.classList.toggle('sidebar-collapse');
+    const sidebarBtn = document.querySelector(".sidebar-toggle");
+    const body = document.querySelector("body");
+    sidebarBtn.addEventListener("click", (e) => {
+      body.classList.toggle("sidebar-open");
+      body.classList.toggle("sidebar-collapse");
       });
     }
-  }
 
 
   /**
@@ -47,27 +42,23 @@ class Sidebar {
     const logoutButton = document.querySelector('.sidebar-logout');
 
     // Обработчик для кнопки "Регистрация"
-    registerButton.addEventListener('click', (event) => {
-      event.preventDefault(); // Отменяем стандартное поведение ссылки
-      const modal = App.getModal('modal-register'); // Получаем окно регистрации
-      Modal.open(modal); // Открываем окно регистрации
-    });
+    const registerBtn = document.querySelector(".menu-item_register");
+    const loginBtn = document.querySelector(".menu-item_login");
+    const logoutBtn = document.querySelector(".menu-item_logout");
+
 
     // Обработчик для кнопки "Войти"
-    loginButton.addEventListener('click', (event) => {
-      event.preventDefault(); // Отменяем стандартное поведение ссылки
-      const modal = App.getModal('modal-login'); // Получаем окно входа
-      Modal.open(modal); // Открываем окно входа
+    registerBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      App.getModal("register").open();
     });
 
     // Обработчик для кнопки "Выйти"
-    logoutButton.addEventListener('click', (event) => {
-      event.preventDefault(); // Отменяем стандартное поведение ссылки
-      User.logout((response) => {
-        if (response.success) {
-          App.setState('init'); // Устанавливаем состояние 'init'
-        } else {
-          console.error('Ошибка выхода:', response.error);
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      User.logout((err, response) => {
+        if (response && response.success) {
+          App.setState("init");
         }
       });
     });
