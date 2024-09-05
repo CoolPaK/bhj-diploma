@@ -12,7 +12,16 @@ class UserWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor(element){
+    // Проверяем, что элемент передан и не является пустым
+    if (!element) {
+      throw new Error('Element is required for UserWidget');
+    }
 
+    // Сохраняем элемент в свойство класса
+    this.element = element;
+
+    // Обновляем информацию о пользователе при создании виджета
+    this.update();
   }
 
   /**
@@ -23,6 +32,15 @@ class UserWidget {
    * авторизованного пользователя
    * */
   update(){
-
+    // Получаем информацию о текущем пользователе
+    User.current((response) => {
+      if (response && response.success) {
+        // Если пользователь авторизован, обновляем имя пользователя
+        this.element.querySelector('.user-name').textContent = response.data.name;
+      } else {
+        // Если пользователь не авторизован, можно очистить имя или показать другое сообщение
+        this.element.querySelector('.user-name').textContent = 'Гость'; // или можно оставить пустым
+      }
+    });
   }
 }

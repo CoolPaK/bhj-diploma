@@ -4,6 +4,14 @@
  * Имеет свойство URL со значением '/transaction'
  * */
 class Transaction extends Entity {
+    static URL = '/transaction';
 
+    static get(accountId, callback) {
+        createRequest({
+            url: `${this.URL}?account_id=${accountId}`,
+            method: 'GET',
+            callback
+        });
+    }
 }
 
