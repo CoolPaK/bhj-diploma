@@ -14,7 +14,7 @@ class Entity {
     createRequest({
       url: this.URL,
       data: data,
-      method: "GET",
+      method: 'GET',
       callback: callback
     });
   }
