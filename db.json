@@ -1,0 +1,97 @@
+{
+  "users": [
+    {
+      "name": "Иван Петров",
+      "email": "ivan.petrov@example.com",
+      "password": "password123",
+      "id": "1"
+    },
+    {
+      "name": "Мария Иванова",
+      "email": "maria.ivanova@example.com",
+      "password": "securepass",
+      "id": "2a3b4c5d6e7f8g9h"
+    },
+    {
+      "name": "Алексей Смирнов",
+      "email": "alexey.smirnov@example.com",
+      "password": "mypassword",
+      "id": "3h4g5f6e7d8c9b0a"
+    },
+    {
+      "name": "Екатерина Сидорова",
+      "email": "ekaterina.sidorova@example.com",
+      "password": "qwertyuiop",
+      "id": "4a5b6c7d8e9f0g1h"
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Сберегательный счет",
+      "user_id": "1",
+      "id": "1"
+    },
+    {
+      "name": "Кредитная карта",
+      "user_id": "1",
+      "id": "2"
+    },
+    {
+      "name": "Расчетный счет",
+      "user_id": "2a3b4c5d6e7f8g9h",
+      "id": "3"
+    },
+    {
+      "name": "Инвестиционный счет",
+      "user_id": "3h4g5f6e7d8c9b0a",
+      "id": "4"
+    }
+  ],
+  "transactions": [
+    {
+      "account_id": "1",
+      "created_at": "2023-01-10 10:00:00",
+      "id": "1",
+      "name": "Пополнение счета",
+      "sum": 10000,
+      "type": "income",
+      "user_id": "1"
+    },
+    {
+      "account_id": "1",
+      "created_at": "2023-01-15 15:30:00",
+      "id": "2",
+      "name": "Снятие наличных",
+      "sum": 5000,
+      "type": "expense",
+      "user_id": "1"
+    },
+    {
+      "account_id": "2",
+      "created_at": "2023-01-20 12:00:00",
+      "id": "3",
+      "name": "Оплата товаров",
+      "sum": 1500,
+      "type": "expense",
+      "user_id": "1"
+    },
+    {
+      "account_id": "3",
+      "created_at": "2023-01-25 09:00:00",
+      "id": "4",
+      "name": "Получение зарплаты",
+      "sum": 30000,
+      "type": "income",
+      "user_id": "2a3b4c5d6e7f8g9h"
+    },
+    {
+      "account_id": "4",
+      "created_at": "2023-01-30 14:00:00",
+      "id": "5",
+      "name": "Инвестиции в акции",
+      "sum": 5000,
+      "type": "expense",
+      "user_id": "3h4g5f6e7d8c9b0a"
+    }
+  ]
+}
