@@ -1,36 +1,42 @@
 /**
  * Основная функция для совершения запросов
  * на сервер.
- * */
+ * @param {Object} options - Опции для запроса.
+ * @param {string} options.url - URL для запроса.
+ * @param {Object} [options.data] - Данные для отправки в запросе.
+ * @param {string} [options.method='GET'] - HTTP-метод (GET, POST и т.д.).
+ * @param {function} options.callback - Функция обратного вызова для обработки ответа.
+ */
 const createRequest = (options = {}) => {
-  let xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.responseType = "json";
-  let { url, data, method, callback } = options;
 
-  let formData = new FormData();
+  let { url, data = {}, method = "GET", callback } = options;
 
-  if (options.method == "GET") {
-    url = url + "?";
-    for (let key in data) {
-      url += key + "=" + data[key] + "&";
-    }
-    url = url.slice(0, -1);
+  // Если метод GET, добавляем данные в URL
+  if (method.toUpperCase() === "GET") {
+    const params = new URLSearchParams(data).toString();
+    url += `?${params}`; // Формируем строку запроса
+  }
+
+  xhr.open(method, url);
+
+  // Если метод не GET, устанавливаем заголовки и отправляем данные
+  if (method.toUpperCase() !== "GET") {
+    xhr.setRequestHeader("Content-Type", "application/json"); // Устанавливаем заголовок для JSON
+    xhr.send(JSON.stringify(data)); // Отправляем данные в формате JSON
   } else {
-    for (let key in data) {
-      formData.append(key, data[key]);
-    }
+    xhr.send(); // Просто отправляем запрос без данных
   }
 
-  xhr.open(options.method, url);
-  xhr.send(formData);
-
-  try {
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState == xhr.DONE && xhr.status === 200) {
-        options.callback(xhr.response.error, xhr.response);
+  // Обработка ответа
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        callback(null, xhr.response); // Успешный ответ
+      } else {
+        callback(new Error(`Ошибка ${xhr.status}: ${xhr.statusText}`)); // Обработка ошибки
       }
-    });
-  } catch (error) {
-    options.callback(error);
-  }
+    }
+  };
 };
