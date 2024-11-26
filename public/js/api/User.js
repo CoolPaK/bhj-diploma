@@ -38,13 +38,13 @@ class User {
    * Обрабатывает ответ сервера и устанавливает пользователя.
    * @param {Object} response - Ответ от сервера.
    */
-  static handleUser Response(response) {
-    if (response && response.user) {
-      this.setCurrent(response.user);
-    } else {
-      this.unsetCurrent();
-    }
-  }
+  // static handleUser Response(response) {
+  //   if (response && response.user) {
+  //     this.setCurrent(response.user);
+  //   } else {
+  //     this.unsetCurrent();
+  //   }
+  // }
 
   /**
    * Получает информацию о текущем
@@ -56,7 +56,8 @@ class User {
       url: this.URL + "/current",
       method: "GET",
       callback: (err, response) => {
-        this.handleUser Response(response);
+        this.handleUser;
+        Response(response);
         callback(err, response);
       },
     });
@@ -73,7 +74,8 @@ class User {
       method: "POST",
       data,
       callback: (err, response) => {
-        this.handleUser Response(response);
+        this.handleUser; 
+        Response(response);
         callback(err, response);
       },
     });
@@ -90,7 +92,8 @@ class User {
       method: "POST",
       data,
       callback: (err, response) => {
-        this.handleUser Response(response);
+        this.handleUser;
+        Response(response);
         callback(err, response);
       },
     });
